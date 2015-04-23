@@ -1,7 +1,7 @@
 # TTDialog
 
 
-![Example](https://github.com/ArtSabintsev/Harpy/blob/master/samplePictures/picSkippedUpdate.png?raw=true "Example")
+![Example](https://github.com/TuteTipito/TTDialog/blob/master/screenshotTTDialog.png "Example")
 
 ## Usage
 ```objective-c
