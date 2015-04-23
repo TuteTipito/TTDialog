@@ -1,7 +1,7 @@
 # TTDialog
 
 
-!(https://github.com/TuteTipito/TTDialog/blob/master/screenshotTTDialog.png)
+![Example](https://github.com/TuteTipito/TTDialog/blob/master/screenshotTTDialog.png)
 
 ## Usage
 ```objective-c
