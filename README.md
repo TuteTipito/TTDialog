@@ -8,6 +8,11 @@
 #import "TTDialog.h"
 ...
 
+- (IBAction)showPanel:(id)sender {
     [TTDialog showDialog];
+}
 ```
+
+## Customization
+
 
