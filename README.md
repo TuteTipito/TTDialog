@@ -29,12 +29,7 @@ antes de
 para que todas las veces que se llame a showDialog nos abra por default ese xib
 
 
-o si es por un caso unico y especial se puede setear el NibName justo antes de llamar a showDialog
-```objective-c
-[TTDialog setNibName:@"<#nib_name#>"];
-[TTDialog showDialog];
-```
-o mas simple
+o si es por un caso unico y especial se puede llamar a showDialog mandandole por parametro el NibName de la View
 ```objective-c
 [TTDialog showDialogWithNibName:@"<#nib_name#>"];
 ```
