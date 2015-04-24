@@ -18,6 +18,11 @@
 
 * crear un .xib
 
+![01](https://github.com/TuteTipito/images/blob/master/TTDialog01.png)
+![02](https://github.com/TuteTipito/images/blob/master/TTDialog02.png)
+![03](https://github.com/TuteTipito/images/blob/master/TTDialog03.png)
+![04](https://github.com/TuteTipito/images/blob/master/TTDialog04.png)
+
 una vez creado se puede setear ese xib por default llamando a
 ```objective-c
 [TTDialog setDefaultNibName:@"<#nib_name#>"];
