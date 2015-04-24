@@ -1,6 +1,6 @@
 //
 //  TTDialog.h
-//  TTDialog
+//  MenuHamburger
 //
 //  Created by Matias Spinelli on 7/4/15.
 //  Copyright (c) 2015 Dalmunc. All rights reserved.
@@ -10,6 +10,11 @@
 
 @interface TTDialog : UIView
 
-+ (void)showDialog;
+@property (nonatomic, strong) NSString * nibName;
+
+
++ (void) showDialog;
++ (void) showDialogWithNibName:(NSString *)nibName;
++ (void) setDefaultNibName:(NSString *)nibName;
 
 @end

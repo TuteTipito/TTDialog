@@ -1,6 +1,6 @@
 //
 //  TTDialog.m
-//  TTDialog
+//  MenuHamburger
 //
 //  Created by Matias Spinelli on 7/4/15.
 //  Copyright (c) 2015 Dalmunc. All rights reserved.
@@ -25,25 +25,49 @@
 
 @implementation TTDialog
 
+static NSString * defualtNibName = @"TTDialog";
+
 static TTDialog *sharedView = nil;
 
-+ (TTDialog*)sharedView {
++ (TTDialog*)sharedViewWithNibName:(NSString*)nibName {
+        
+    if(sharedView == nil || ![sharedView.nibName isEqualToString:nibName]) {
+        
+        if(!nibName)
+            nibName = defualtNibName;
+        
+        sharedView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil] objectAtIndex:0];
     
-    if(sharedView == nil)
-        sharedView = [[[NSBundle mainBundle] loadNibNamed:@"TTDialog" owner:self options:nil] objectAtIndex:0];
-    
-    sharedView.layer.cornerRadius = 10;
-    sharedView.userInteractionEnabled = YES;
-    [sharedView setExclusiveTouch:YES];
-    
-    sharedView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
-                                   UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
-    
-    [[NSNotificationCenter defaultCenter] addObserver:sharedView
-                                             selector:@selector(memoryWarning:)
-                                                 name:UIApplicationDidReceiveMemoryWarningNotification
-                                               object:nil];
+        sharedView.nibName = nibName;
+        
+        sharedView.layer.cornerRadius = 10;
+        sharedView.userInteractionEnabled = YES;
+        [sharedView setExclusiveTouch:YES];
+        
+        sharedView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
+                                       UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
+        
+        [[NSNotificationCenter defaultCenter] addObserver:sharedView
+                                                 selector:@selector(memoryWarning:)
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
+    }
+
     return sharedView;
+}
+
+
++ (void) setDefaultNibName:(NSString *)nibName {
+    defualtNibName = nibName;
+    
+    [TTDialog sharedViewWithNibName:nibName];
+    sharedView.nibName = nibName;
+}
+
++ (void) showDialogWithNibName:(NSString *)nibName  {
+    [TTDialog sharedViewWithNibName:nibName];
+    sharedView.nibName = nibName;
+    [self showDialog];
 }
 
 + (void) showDialog {
@@ -58,7 +82,11 @@ static TTDialog *sharedView = nil;
         if (view == nil) view = keyWindow;
     }
 
-    [[TTDialog sharedView] showInView:view];
+    if (sharedView.nibName) {
+        [sharedView showInView:view];
+    } else {
+        [[TTDialog sharedViewWithNibName:nil] showInView:view];
+    }
     
 }
 
@@ -94,22 +122,14 @@ static TTDialog *sharedView = nil;
     sharedView.center = CGPointMake(floor(CGRectGetWidth(self.backView.bounds)/2), floor(CGRectGetHeight(self.backView.bounds)/2));
         
 #pragma mark SI LO QUIERO INVERSO...
-//        sharedView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1.3, 1.3, 1);
-//        sharedView.layer.opacity = 1;//0.3;
-    
-    sharedView.transform = CGAffineTransformMakeScale(0.0001, 0.0001);
+    BOOL smallerToBigger = YES;
 
+    if (smallerToBigger) {
+        sharedView.transform = CGAffineTransformMakeScale(0.0001, 0.0001);
+    } else {
+        sharedView.transform = CGAffineTransformMakeScale(2.3, 2.3);
+    }
     
-//        [UIView animateWithDuration:0.15
-//                              delay:0
-//                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut
-//                         animations:^{
-//                             sharedView.layer.transform = CATransform3DScale(CATransform3DMakeTranslation(0, 0, 0), 1, 1, 1);
-//                             sharedView.layer.opacity = 1;
-//                         }
-//                         completion:NULL];
-        
-        
     void (^animationBlock)(BOOL) = ^(BOOL finished) {
         [UIView animateWithDuration:0.2
                          animations:^{
@@ -120,7 +140,7 @@ static TTDialog *sharedView = nil;
                              [UIView animateWithDuration:0.2
                                               animations:^{
                                                   sharedView.transform = CGAffineTransformMakeScale(1.05, 1.05);
-                                              }
+                                            }
                                               completion:^(BOOL finished){
                                                   
                                                   [UIView animateWithDuration:0.1
@@ -128,7 +148,7 @@ static TTDialog *sharedView = nil;
                                                                        sharedView.transform = CGAffineTransformIdentity;
                                                                    }
                                                                    completion:^(BOOL finished){
-
+                                                                   
                                                                    }];
                                               }];
                          }];
@@ -145,6 +165,7 @@ static TTDialog *sharedView = nil;
                          sharedView.transform = CGAffineTransformMakeScale((shouldBounce ? 1.05 : 1.0), (shouldBounce ? 1.05 : 1.0));
                      }
                      completion:(shouldBounce ? animationBlock : ^(BOOL finished) {
+    
     })];
 
     
@@ -158,6 +179,7 @@ static TTDialog *sharedView = nil;
                          sharedView.transform = CGAffineTransformMakeScale(0.0001, 0.0001);
                      }
                      completion:^(BOOL finished){
+                         sharedView.nibName = nil;
                          [self.transparentView removeFromSuperview];
                          [sharedView removeFromSuperview];
                      }];
