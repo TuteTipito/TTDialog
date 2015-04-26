@@ -18,10 +18,16 @@
 
 * crear un .xib
 
-![01](https://github.com/TuteTipito/images/blob/master/TTDialog01.png)
-![02](https://github.com/TuteTipito/images/blob/master/TTDialog02.png)
-![03](https://github.com/TuteTipito/images/blob/master/TTDialog03.png)
-![04](https://github.com/TuteTipito/images/blob/master/TTDialog04.png)
+01)![00](https://github.com/TuteTipito/images/blob/master/TTDialog00.png)
+
+02)![01](https://github.com/TuteTipito/images/blob/master/TTDialog01.png)
+
+03)![02](https://github.com/TuteTipito/images/blob/master/TTDialog02.png)
+
+04)![03](https://github.com/TuteTipito/images/blob/master/TTDialog03.png)
+
+05)![04](https://github.com/TuteTipito/images/blob/master/TTDialog04.png)
+
 
 una vez creado se puede setear ese xib por default llamando a
 ```objective-c
