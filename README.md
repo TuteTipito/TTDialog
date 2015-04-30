@@ -46,7 +46,7 @@ o si es por un caso unico y especial se puede llamar a showDialog mandandole por
 [TTDialog showDialogWithNibName:@"<#nib_name#>"];
 ```
 
-## Usage
+## Showing the HUD
 
 para mejor uso se pueden usar metodos como estos para enviarle por parametro una vista especifica donde se abra el `TTDialog` o el delegate para futuros callouts.
 ```objective-c
