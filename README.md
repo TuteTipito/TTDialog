@@ -21,13 +21,13 @@
 --
 ![00](https://github.com/TuteTipito/images/blob/master/TTDialog00.png)
 --
- ![01](https://github.com/TuteTipito/images/blob/master/TTDialog01.png)
+![01](https://github.com/TuteTipito/images/blob/master/TTDialog01.png)
 --
- ![02](https://github.com/TuteTipito/images/blob/master/TTDialog02.png)
+![02](https://github.com/TuteTipito/images/blob/master/TTDialog02.png)
 --
- ![03](https://github.com/TuteTipito/images/blob/master/TTDialog03.png)
+![03](https://github.com/TuteTipito/images/blob/master/TTDialog03.png)
 --
- ![04](https://github.com/TuteTipito/images/blob/master/TTDialog04.png)
+![04](https://github.com/TuteTipito/images/blob/master/TTDialog04.png)
 
 --
 
