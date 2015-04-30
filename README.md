@@ -18,6 +18,19 @@
 
 * crear un .xib
 
+--
+![00](https://github.com/TuteTipito/images/blob/master/TTDialog00.png)
+--
+ ![01](https://github.com/TuteTipito/images/blob/master/TTDialog01.png)
+--
+ ![02](https://github.com/TuteTipito/images/blob/master/TTDialog02.png)
+--
+ ![03](https://github.com/TuteTipito/images/blob/master/TTDialog03.png)
+--
+ ![04](https://github.com/TuteTipito/images/blob/master/TTDialog04.png)
+
+--
+
 una vez creado se puede setear ese xib por default llamando a
 ```objective-c
 [TTDialog setDefaultNibName:@"<#nib_name#>"];
@@ -29,12 +42,7 @@ antes de
 para que todas las veces que se llame a showDialog nos abra por default ese xib
 
 
-o si es por un caso unico y especial se puede setear el NibName justo antes de llamar a showDialog
-```objective-c
-[TTDialog setNibName:@"<#nib_name#>"];
-[TTDialog showDialog];
-```
-o mas simple
+o si es por un caso unico y especial se puede llamar a showDialog mandandole por parametro el NibName de la View
 ```objective-c
 [TTDialog showDialogWithNibName:@"<#nib_name#>"];
 ```
