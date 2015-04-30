@@ -51,8 +51,13 @@ o si es por un caso unico y especial se puede llamar a showDialog mandandole por
 para mejor uso se pueden usar metodos como estos para enviarle por parametro una vista especifica donde se abra el `TTDialog` o el delegate para futuros callouts.
 ```objective-c
 + (void) showDialogWithNibName:(NSString *)nibName;
++ (void) showDialogWithDelegate:(id)delegate_;
++ (void) showDialogInView:(UIView*)parentVew;
+
 + (void) showDialogWithNibName:(NSString *)nibName andDelegate:(id)delegate_;
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew;
+
++ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ ;
 
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew andDelegate:(id)delegate_;
 ```
