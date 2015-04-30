@@ -48,7 +48,7 @@ o si es por un caso unico y especial se puede llamar a showDialog mandandole por
 
 ## Usage
 
-para mejor uso se pueden usar metodos como estos para enviarle por parametro una vista especifica donde se abra el `**TTDialog**` o el delegate para futuros callouts.
+para mejor uso se pueden usar metodos como estos para enviarle por parametro una vista especifica donde se abra el `TTDialog` o el delegate para futuros callouts.
 ```objective-c
 + (void) showDialogWithNibName:(NSString *)nibName;
 + (void) showDialogWithNibName:(NSString *)nibName andDelegate:(id)delegate_;
@@ -60,7 +60,7 @@ para mejor uso se pueden usar metodos como estos para enviarle por parametro una
 
 ## Customization
 
-`**TTDialog**` can be customized via the following methods:
+**`TTDialog`** can be customized via the following methods:
 ```objective-c
 + (void) setDefaultNibName:(NSString *)nibName;     // default is @"TTDialog"
 + (void) setShouldBounce:(BOOL)bounce;              // default is YES
