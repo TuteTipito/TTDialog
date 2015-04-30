@@ -8,24 +8,36 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TTDialog : UIView
+@interface TTDialog : UIView {
+    
+    @protected SEL callback;
+    @protected id delegate;
+}
 
-@property (nonatomic, assign) id delegate;
-@property (nonatomic, assign) SEL callback;
+
 
 #pragma mark - Customization
 
-+ (void) setDefaultNibName:(NSString *)nibName;
-+ (void) setShouldBounce:(BOOL)bounce;
-+ (void) setShouldRotate:(BOOL)rotate;
-+ (void) setSmallerToBigger:(BOOL)smallerToBigger_;
-+ (void) setAnimationDuration:(double)duration;
++ (void) setDefaultNibName:(NSString *)nibName;     // default is @"TTDialog"
++ (void) setShouldBounce:(BOOL)bounce;              // default is YES
++ (void) setShouldRotate:(BOOL)rotate;              // default is NO
++ (void) setSmallerToBigger:(BOOL)smallerToBigger_; // default is YES
++ (void) setAnimationDuration:(double)duration;     // defualt is 0.5
 
 #pragma mark - Show Methods
 
++ (void) showDialog;
+
 + (void) showDialogWithNibName:(NSString *)nibName;
++ (void) showDialogWithDelegate:(id)delegate_;
++ (void) showDialogInView:(UIView*)parentVew;
+
 + (void) showDialogWithNibName:(NSString *)nibName andDelegate:(id)delegate_;
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew;
+
++ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ ;
+
+
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew andDelegate:(id)delegate_;
 
 #pragma mark - Instance Methods

@@ -11,6 +11,8 @@
 
 @interface TTDialog()
 
+//@property (nonatomic, assign) id delegate;
+
 - (void)showInView:(UIView*)view;
 - (void)memoryWarning:(NSNotification*) notification;
 
@@ -35,7 +37,7 @@ static double animationDuration = 0.5;
 
 static TTDialog *sharedView = nil;
 
-+ (TTDialog*)sharedViewWithNibName:(NSString*)nibName {
++ (TTDialog*)sharedViewWithNibName:(NSString*)nibName inView:(UIView*)parentVew andDelegate:(id)delegate_{
         
     if(sharedView == nil || ![sharedView.nibName isEqualToString:nibName]) {
         
@@ -45,10 +47,13 @@ static TTDialog *sharedView = nil;
         sharedView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil] objectAtIndex:0];
     
         sharedView.nibName = nibName;
+        sharedView.parentView = parentVew;
         
         sharedView.layer.cornerRadius = 10;
         sharedView.userInteractionEnabled = YES;
         [sharedView setExclusiveTouch:YES];
+        
+        NSLog(@"height width : { %f : %f }",sharedView.frame.size.height,sharedView.frame.size.width);
         
         sharedView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                        UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin);
@@ -66,8 +71,6 @@ static TTDialog *sharedView = nil;
 
 + (void) setDefaultNibName:(NSString *)nibName {
     defualtNibName = nibName;
-    [TTDialog sharedViewWithNibName:nibName];
-    sharedView.nibName = nibName;
 }
 
 + (void) setShouldBounce:(BOOL)bounce {
@@ -86,10 +89,26 @@ static TTDialog *sharedView = nil;
     animationDuration = duration;
 }
 
+- (void) setDelegate:(id)delegate_ {
+    delegate = delegate_;
+}
+
 #pragma mark - Show Methods
+
++ (void) showDialog {
+    [self showDialogWithNibName:nil inView:nil andDelegate:nil];
+}
 
 + (void) showDialogWithNibName:(NSString *)nibName {
     [self showDialogWithNibName:nibName inView:nil andDelegate:nil];
+}
+
++ (void) showDialogWithDelegate:(id)delegate_ {
+    [self showDialogWithNibName:nil inView:nil andDelegate:delegate_];
+}
+
++ (void) showDialogInView:(UIView*)parentVew {
+    [self showDialogWithNibName:nil inView:parentVew andDelegate:nil];
 }
 
 + (void) showDialogWithNibName:(NSString *)nibName andDelegate:(id)delegate_ {
@@ -100,12 +119,14 @@ static TTDialog *sharedView = nil;
     [self showDialogWithNibName:nibName inView:parentVew andDelegate:nil];
 }
 
++ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ {
+    [self showDialogWithNibName:nil inView:parentVew andDelegate:nil];
+}
+
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew andDelegate:(id)delegate_ {
-    [TTDialog sharedViewWithNibName:nibName];
-    sharedView.nibName = nibName;
-    sharedView.parentView = parentVew;
-    sharedView.delegate = delegate_;
+    [TTDialog sharedViewWithNibName:nibName inView:parentVew andDelegate:delegate_];
     [sharedView showDialog];
+    [sharedView setDelegate:delegate_];
 }
 
 #pragma mark - Instance Methods
@@ -125,12 +146,8 @@ static TTDialog *sharedView = nil;
         }
     }
 
-    if (sharedView.nibName) {
-        [sharedView showInView:view];
-    } else {
-        [[TTDialog sharedViewWithNibName:nil] showInView:view];
-    }
-    
+    [sharedView showInView:view];
+
 }
 
 - (void)showInView:(UIView*)view {
@@ -160,7 +177,7 @@ static TTDialog *sharedView = nil;
     
     
     sharedView.center = CGPointMake(floor(CGRectGetWidth(self.backView.bounds)/2), floor(CGRectGetHeight(self.backView.bounds)/2));
-        
+
 
     if (smallerToBigger) {
         sharedView.transform = CGAffineTransformMakeScale(0.0001, 0.0001);
@@ -224,10 +241,10 @@ static TTDialog *sharedView = nil;
                      }
                      completion:^(BOOL finished){
                          
-                         if ([self.delegate respondsToSelector:self.callback]) {
+                         if ([delegate respondsToSelector:callback]) {
                                 #pragma clang diagnostic push
                                 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                             [self.delegate performSelector:self.callback];
+                             [delegate performSelector:callback];
                                 #pragma clang diagnostic pop
                          }
                          
@@ -260,7 +277,6 @@ static TTDialog *sharedView = nil;
 #pragma mark - MemoryWarning
 
 - (void)memoryWarning:(NSNotification *)notification {
-    
     if (sharedView.superview == nil) {
         sharedView = nil;
     }
