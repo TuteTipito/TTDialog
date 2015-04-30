@@ -1,6 +1,6 @@
 //
 //  TTDialog.m
-//  MenuHamburger
+//  TTDialog
 //
 //  Created by Matias Spinelli on 7/4/15.
 //  Copyright (c) 2015 Dalmunc. All rights reserved.
@@ -12,8 +12,10 @@
 @interface TTDialog()
 
 - (void)showInView:(UIView*)view;
-
 - (void)memoryWarning:(NSNotification*) notification;
+
+@property (nonatomic, strong) NSString * nibName;
+@property (nonatomic, strong) UIView * parentView;
 
 @property (nonatomic, strong) UIView * backView;
 
@@ -26,6 +28,10 @@
 @implementation TTDialog
 
 static NSString * defualtNibName = @"TTDialog";
+static BOOL shouldBounce = YES;
+static BOOL shouldRotate = NO;
+static BOOL smallerToBigger = YES;
+static double animationDuration = 0.5;
 
 static TTDialog *sharedView = nil;
 
@@ -56,30 +62,67 @@ static TTDialog *sharedView = nil;
     return sharedView;
 }
 
+#pragma mark - Customization
 
 + (void) setDefaultNibName:(NSString *)nibName {
     defualtNibName = nibName;
-    
     [TTDialog sharedViewWithNibName:nibName];
     sharedView.nibName = nibName;
 }
 
-+ (void) showDialogWithNibName:(NSString *)nibName  {
-    [TTDialog sharedViewWithNibName:nibName];
-    sharedView.nibName = nibName;
-    [self showDialog];
++ (void) setShouldBounce:(BOOL)bounce {
+    shouldBounce = bounce;
 }
 
-+ (void) showDialog {
++ (void) setShouldRotate:(BOOL)rotate {
+    shouldRotate = rotate;
+}
+
++ (void) setSmallerToBigger:(BOOL)smallerToBigger_ {
+    smallerToBigger = smallerToBigger_;
+}
+
++ (void) setAnimationDuration:(double)duration {
+    animationDuration = duration;
+}
+
+#pragma mark - Show Methods
+
++ (void) showDialogWithNibName:(NSString *)nibName {
+    [self showDialogWithNibName:nibName inView:nil andDelegate:nil];
+}
+
++ (void) showDialogWithNibName:(NSString *)nibName andDelegate:(id)delegate_ {
+    [self showDialogWithNibName:nibName inView:nil andDelegate:delegate_];
+}
+
++ (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew {
+    [self showDialogWithNibName:nibName inView:parentVew andDelegate:nil];
+}
+
++ (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew andDelegate:(id)delegate_ {
+    [TTDialog sharedViewWithNibName:nibName];
+    sharedView.nibName = nibName;
+    sharedView.parentView = parentVew;
+    sharedView.delegate = delegate_;
+    [sharedView showDialog];
+}
+
+#pragma mark - Instance Methods
+
+- (void) showDialog {
     
     UIWindow* keyWindow = [UIApplication sharedApplication].keyWindow;
-    
     UIView* view;
     
-    if ([keyWindow respondsToSelector:@selector(rootViewController)]) {
-        view = keyWindow.rootViewController.view;
-        
-        if (view == nil) view = keyWindow;
+    if (sharedView.parentView) {
+        view = sharedView.parentView;
+    } else {
+        if ([keyWindow respondsToSelector:@selector(rootViewController)]) {
+            view = keyWindow.rootViewController.view;
+            
+            if (view == nil) view = keyWindow;
+        }
     }
 
     if (sharedView.nibName) {
@@ -92,7 +135,6 @@ static TTDialog *sharedView = nil;
 
 - (void)showInView:(UIView*)view {
 
-    
     self.backView = view;
     
     self.transparentView = [[UIView alloc] init];
@@ -106,12 +148,10 @@ static TTDialog *sharedView = nil;
     
     [self.transparentView setFrame:view.frame];
     
-    
     [self.transparentView addGestureRecognizer:self.tapGesture];
     self.tapGesture.enabled = YES;
     
     [self.backView addSubview:self.transparentView];
-    
     
     
     if(![sharedView isDescendantOfView:view]) {
@@ -121,8 +161,6 @@ static TTDialog *sharedView = nil;
     
     sharedView.center = CGPointMake(floor(CGRectGetWidth(self.backView.bounds)/2), floor(CGRectGetHeight(self.backView.bounds)/2));
         
-#pragma mark SI LO QUIERO INVERSO...
-    BOOL smallerToBigger = YES;
 
     if (smallerToBigger) {
         sharedView.transform = CGAffineTransformMakeScale(0.0001, 0.0001);
@@ -153,13 +191,15 @@ static TTDialog *sharedView = nil;
                                               }];
                          }];
     };
-        
-    BOOL shouldBounce = YES;
     
-    [UIView animateWithDuration:0.6
+    [UIView animateWithDuration:animationDuration
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
+                         
+                         if (shouldRotate)
+                             sharedView.transform = CGAffineTransformMakeRotation(M_PI);
+
                          self.transparentView.alpha = 0.6;
                          sharedView.center = self.center;
                          sharedView.transform = CGAffineTransformMakeScale((shouldBounce ? 1.05 : 1.0), (shouldBounce ? 1.05 : 1.0));
@@ -173,15 +213,28 @@ static TTDialog *sharedView = nil;
 
 - (void) hideDialog {
     
-    [UIView animateWithDuration:0.6
+    [UIView animateWithDuration:animationDuration
                      animations:^{
+
+                         if (shouldRotate)
+                             sharedView.transform = CGAffineTransformMakeRotation(M_PI);
+
                          self.transparentView.alpha = 0;
                          sharedView.transform = CGAffineTransformMakeScale(0.0001, 0.0001);
                      }
                      completion:^(BOOL finished){
+                         
+                         if ([self.delegate respondsToSelector:self.callback]) {
+                                #pragma clang diagnostic push
+                                #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                             [self.delegate performSelector:self.callback];
+                                #pragma clang diagnostic pop
+                         }
+                         
                          sharedView.nibName = nil;
                          [self.transparentView removeFromSuperview];
                          [sharedView removeFromSuperview];
+                         
                      }];
 }
 
