@@ -28,14 +28,15 @@
 
 + (void) showDialog;
 
-+ (void) showDialogWithNibName:(NSString *)nibName;
-+ (void) showDialogWithDelegate:(id)delegate_;
 + (void) showDialogInView:(UIView*)parentVew;
++ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ ;
+
++ (void) showDialogWithDelegate:(id)delegate_;
+
++ (void) showDialogWithNibName:(NSString *)nibName;
 
 + (void) showDialogWithNibName:(NSString *)nibName andDelegate:(id)delegate_;
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew;
-
-+ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ ;
 
 
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew andDelegate:(id)delegate_;
@@ -44,5 +45,6 @@
 
 - (void) showDialog;
 - (void) hideDialog;
+- (void) callbackDialog;
 
 @end

@@ -99,16 +99,20 @@ static TTDialog *sharedView = nil;
     [self showDialogWithNibName:nil inView:nil andDelegate:nil];
 }
 
-+ (void) showDialogWithNibName:(NSString *)nibName {
-    [self showDialogWithNibName:nibName inView:nil andDelegate:nil];
++ (void) showDialogInView:(UIView*)parentVew {
+    [self showDialogWithNibName:nil inView:parentVew andDelegate:nil];
+}
+
++ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ {
+    [self showDialogWithNibName:nil inView:parentVew andDelegate:nil];
 }
 
 + (void) showDialogWithDelegate:(id)delegate_ {
     [self showDialogWithNibName:nil inView:nil andDelegate:delegate_];
 }
 
-+ (void) showDialogInView:(UIView*)parentVew {
-    [self showDialogWithNibName:nil inView:parentVew andDelegate:nil];
++ (void) showDialogWithNibName:(NSString *)nibName {
+    [self showDialogWithNibName:nibName inView:nil andDelegate:nil];
 }
 
 + (void) showDialogWithNibName:(NSString *)nibName andDelegate:(id)delegate_ {
@@ -119,9 +123,6 @@ static TTDialog *sharedView = nil;
     [self showDialogWithNibName:nibName inView:parentVew andDelegate:nil];
 }
 
-+ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ {
-    [self showDialogWithNibName:nil inView:parentVew andDelegate:nil];
-}
 
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew andDelegate:(id)delegate_ {
     [TTDialog sharedViewWithNibName:nibName inView:parentVew andDelegate:delegate_];
@@ -241,12 +242,8 @@ static TTDialog *sharedView = nil;
                      }
                      completion:^(BOOL finished){
                          
-                         if ([delegate respondsToSelector:callback]) {
-                                #pragma clang diagnostic push
-                                #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                             [delegate performSelector:callback];
-                                #pragma clang diagnostic pop
-                         }
+
+                         [self callback];
                          
                          sharedView.nibName = nil;
                          [self.transparentView removeFromSuperview];
@@ -255,6 +252,16 @@ static TTDialog *sharedView = nil;
                      }];
 }
 
+- (void) callbackDialog {
+    
+    if ([delegate respondsToSelector:callback]) {
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [delegate performSelector:callback];
+            #pragma clang diagnostic pop
+    }
+    
+}
 
 #pragma mark - Gestures
 
