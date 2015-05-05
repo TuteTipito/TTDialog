@@ -76,17 +76,14 @@ para mejor uso se pueden usar metodos como estos para enviarle por parametro una
 + (void) setAnimationDuration:(double)duration;     // defualt is 0.5
 ```
 
-# Heritage
+### Heritage
 you can customize the callback in the inherited view controller
 ```objective-c
 - (void) callbackDialog;
 ```
-or just setting the 
+or you can set and use in the inherited view controller
 ```objective-c
     @protected SEL callback;
-```
-and the delegate
-```objective-c
     @protected id delegate;
 ```
 
