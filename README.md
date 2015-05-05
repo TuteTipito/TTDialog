@@ -50,14 +50,16 @@ o si es por un caso unico y especial se puede llamar a showDialog mandandole por
 
 para mejor uso se pueden usar metodos como estos para enviarle por parametro una vista especifica donde se abra el `TTDialog` o el delegate para futuros callouts.
 ```objective-c
-+ (void) showDialogWithNibName:(NSString *)nibName;
-+ (void) showDialogWithDelegate:(id)delegate_;
 + (void) showDialogInView:(UIView*)parentVew;
++ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ ;
+
++ (void) showDialogWithDelegate:(id)delegate_;
+
++ (void) showDialogWithNibName:(NSString *)nibName;
 
 + (void) showDialogWithNibName:(NSString *)nibName andDelegate:(id)delegate_;
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew;
 
-+ (void) showDialogInView:(UIView*)parentVew withDelegate:(id)delegate_ ;
 
 + (void) showDialogWithNibName:(NSString *)nibName inView:(UIView*)parentVew andDelegate:(id)delegate_;
 ```
@@ -72,5 +74,19 @@ para mejor uso se pueden usar metodos como estos para enviarle por parametro una
 + (void) setShouldRotate:(BOOL)rotate;              // default is NO
 + (void) setSmallerToBigger:(BOOL)smallerToBigger_; // default is YES
 + (void) setAnimationDuration:(double)duration;     // defualt is 0.5
+```
+
+# Heritage
+you can customize the callback in the inherited view controller
+```objective-c
+- (void) callbackDialog;
+```
+or just setting the 
+```objective-c
+    @protected SEL callback;
+```
+and the delegate
+```objective-c
+    @protected id delegate;
 ```
 
